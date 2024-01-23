@@ -16,7 +16,7 @@ This project has been designed with the purpose of streamlining the process of g
 - [License](#license)
 - [Features](#features)
 - [Contributing](#contributing)
-- [Test](#test)
+- [Tests](#tests)
 - [Questions](#question)
 
 ## Installation
