@@ -21,11 +21,11 @@ This project has been designed with the purpose of streamlining the process of g
 
 ## Installation
 
-- npm install
+- `npm install`
 
 ## Usage
 
-- node index.js
+- `node index.js`
 
 ## Credits
 
@@ -45,7 +45,7 @@ This project has been designed with the purpose of streamlining the process of g
 
 ## Tests
 
-- N/A
+- to run the test used the code (`npm run test`)
 
 ## Questions
 
