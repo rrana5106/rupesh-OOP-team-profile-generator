@@ -6,7 +6,7 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
-//Setting up the output directory and the file path
+// Setting up the output directory and the file path
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 
 // Check if the 'output' directory exists, create it if it doesn't
@@ -18,13 +18,19 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 // Importing the HTML rendering function
 const render = require("./src/page-template.js");
+
 // Array to store team members
 const teamArray = [];
+
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
+
 // Function to initialize the application
 function init() {
+  // Creating the manager
   createManager();
 }
+
+// Function to gather the information about the manager
 function createManager() {
   inquirer
     .prompt([
@@ -50,6 +56,7 @@ function createManager() {
       },
     ])
     .then((responses) => {
+      // Creating the manager object and add it to the teamArray
       const manager = new Manager(
         responses.managerName,
         responses.managerId,
@@ -57,9 +64,12 @@ function createManager() {
         responses.managerOfficeNumber
       );
       teamArray.push(manager);
+      // After creating the manager, move on to creating the team
       createTeam();
     });
 }
+
+// Function to create the Team
 function createTeam() {
   inquirer
     .prompt([
@@ -73,24 +83,37 @@ function createTeam() {
     .then((userAns) => {
       switch (userAns.memberChoice) {
         case "Engineer":
+          // If user choose Engineer, gather the information for an Engineer
           addEngineer();
           break;
         case "Intern":
+          // If user choose Intern, gather the information for an Intern
           addIntern();
           break;
         default:
+          // If user is done, generate HTML and write to file
           const html = render(teamArray);
+
+          // Ensure the "output" directory exists
+          if (!fs.existsSync(OUTPUT_DIR)) {
+            fs.mkdirSync(OUTPUT_DIR);
+          }
+
+          // Write the HTML file
           fs.writeFile(outputPath, html, (err) => {
             if (err) {
               console.error(`Error writing html file:`, err);
             } else {
               console.log(`HTML file written to ${outputPath}`);
+              // Log the teamArray to the console for verification
               console.log(teamArray);
             }
           });
       }
     });
 }
+
+// Function to gather information about an Engineer
 function addEngineer() {
   inquirer
     .prompt([
@@ -116,6 +139,7 @@ function addEngineer() {
       },
     ])
     .then((responses) => {
+      // Create an Engineer object and add it to the teamArray
       const engineer = new Engineer(
         responses.engineerName,
         responses.engineerId,
@@ -123,9 +147,13 @@ function addEngineer() {
         responses.engineerGithub
       );
       teamArray.push(engineer);
+
+      // After creating the engineer, return to the createTeam function
       createTeam();
     });
 }
+
+// Function to gather information about an Intern
 function addIntern() {
   inquirer
     .prompt([
@@ -151,6 +179,7 @@ function addIntern() {
       },
     ])
     .then((responses) => {
+      // Create an Intern object and add it to the teamArray
       const intern = new Intern(
         responses.internName,
         responses.internId,
@@ -158,7 +187,11 @@ function addIntern() {
         responses.internSchool
       );
       teamArray.push(intern);
+
+      // After creating the intern, return to the create function
       createTeam();
     });
 }
+
+// Starting the application by calling the function
 init();
